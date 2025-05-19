@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESG Integration Service Selector</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .section { margin-bottom: 20px; }
+    .sub-section { margin-left: 20px; }
+    h2, h3 { color: #2c3e50; }
+    .submit-btn { padding: 10px 15px; background-color: #2ecc71; color: white; border: none; cursor: pointer; }
+    .submit-btn:hover { background-color: #27ae60; }
+  </style>
+</head>
+<body>
+  <h2>ESG Integration Service Selector</h2>
+
+  <div class="section">
+    <label for="org">Organisation Name:</label><br>
+    <input type="text" id="org" required><br><br>
+    <label for="email">Email ID:</label><br>
+    <input type="email" id="email" required><br>
+  </div>
+
+  <div class="section">
+    <h3>Evaluate</h3>
+    <div class="sub-section">
+      <input type="checkbox" value="Gap Analysis"> Gap Analysis<br>
+      <input type="checkbox" value="Carbon Audit"> Carbon Audit<br>
+      <input type="checkbox" value="Materiality and Risk Assessment"> Materiality and Risk Assessment<br>
+      <input type="checkbox" value="Supply Chain Assessment"> Supply Chain Assessment<br>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Create</h3>
+    <div class="sub-section">
+      <input type="checkbox" value="Baseline Report"> Baseline Report<br>
+      <input type="checkbox" value="ESG Roadmap and Action Plan"> ESG Roadmap and Action Plan<br>
+      <input type="checkbox" value="Net Zero Strategy"> Net Zero Strategy<br>
+      <input type="checkbox" value="Data Management"> Data Management<br>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Implement</h3>
+    <div class="sub-section">
+      <input type="checkbox" value="Renewed Policies"> Renewed Policies<br>
+      <input type="checkbox" value="Action Plan Implementation"> Action Plan Implementation<br>
+      <input type="checkbox" value="Annual ESG Report"> Annual ESG Report<br>
+      <input type="checkbox" value="ESG Supply Chain Engagement"> ESG Supply Chain Engagement<br>
+    </div>
+  </div>
+
+  <button class="submit-btn" onclick="submitForm()">Submit</button>
+
+  <div id="result" class="section"></div>
+
+  <script>
+    function submitForm() {
+      const org = document.getElementById('org').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const checkboxes = document.querySelectorAll('input[type=\"checkbox\"]');
+      let selected = [];
+
+      checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(cb.value);
+      });
+
+      if (!org || !email) {
+        alert(\"Please enter both Organisation Name and Email.\");
+        return;
+      }
+
+      fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSXFzoVsM_wCQ/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organization: org,
+          email: email,
+          services: selected.join(', ')
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('result').innerHTML =
+          `<h3>Thank you, ${org}!</h3><p>You selected ${selected.length} service(s):</p><ul>` +
+          selected.map(s => `<li>${s}</li>`).join('') + `</ul>`;
+      })
+      .catch(error => {
+        alert(\"There was an error submitting your data.\");
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>

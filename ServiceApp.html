@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ESG Integration Service Selector</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
+    body { font-family: Arial; padding: 20px; }
     .section { margin-bottom: 20px; }
     .sub-section { margin-left: 20px; }
     h2, h3 { color: #2c3e50; }
@@ -61,7 +61,7 @@
     function submitForm() {
       const org = document.getElementById('org').value.trim();
       const email = document.getElementById('email').value.trim();
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const checkboxes = document.querySelectorAll('input[type=\"checkbox\"]');
       let selected = [];
 
       checkboxes.forEach(cb => {
@@ -69,12 +69,11 @@
       });
 
       if (!org || !email) {
-        alert("Please enter both Organisation Name and Email.");
+        alert(\"Please enter both Organisation Name and Email.\");
         return;
       }
 
-      // Prepare data for Google Apps Script
-      fetch('https://script.google.com/macros/s/AKfycbzq-nSXQ_spvW7h_pyuzUPZ7iabm-aSw3io9JW9y5QWmXQT3Ew-YiP9HZVgYZraH0uo4Q/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSXFzoVsM_wCQ/exec', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -90,7 +89,7 @@
           selected.map(s => `<li>${s}</li>`).join('') + `</ul>`;
       })
       .catch(error => {
-        alert("There was an error submitting your data.");
+        alert(\"There was an error submitting your data.\");
         console.error(error);
       });
     }

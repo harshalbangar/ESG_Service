@@ -58,10 +58,12 @@
   <div id="result" style="margin-top:20px;"></div>
 
   <script type="module">
-    document.getElementById('submitBtn').addEventListener('click', submitSelection);
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+    import { createClient } from 'https://esm.run/@supabase/supabase-js@2';
 
-    const supabase = createClient('https://YOUR_PROJECT_ID.supabase.co', 'YOUR_ANON_KEY');
+    const supabase = createClient(
+      'https://sjwljzawnujprhcfndmu.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd2xqemF3bnVqcHJoY2ZuZG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NjY2MDIsImV4cCI6MjA2MzI0MjYwMn0.n7p5uNmwudTjGmnV2kTxo1O9X4xu9Zn_XBczyuaR2kM'
+    );
 
     const items = document.querySelectorAll('.item');
     const dropZone = document.getElementById('selectedZone');
@@ -127,6 +129,8 @@
           selectedItems.map(s => `<li>${s}</li>`).join('') + `</ul>`;
       }
     }
+
+    document.getElementById('submitBtn').addEventListener('click', submitSelection);
   </script>
 </body>
 </html>

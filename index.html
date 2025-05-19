@@ -54,17 +54,14 @@
     <h3>Selected Services</h3>
   </div>
 
-  <button class="button" onclick="submitSelection()">Submit Selection</button>
+  <button class="button" id="submitBtn">Submit Selection</button>
   <div id="result" style="margin-top:20px;"></div>
 
   <script type="module">
+    document.getElementById('submitBtn').addEventListener('click', submitSelection);
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-    const supabase = createClient(
-  'https://sjwljzawnujprhcfndmu.supabase.co',
-  'YOUR_PUBLIC_ANON_KEY_HERE'
-);
-
+    const supabase = createClient('https://YOUR_PROJECT_ID.supabase.co', 'YOUR_ANON_KEY');
 
     const items = document.querySelectorAll('.item');
     const dropZone = document.getElementById('selectedZone');

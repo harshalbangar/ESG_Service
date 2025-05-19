@@ -1,21 +1,4 @@
->
-      <h3>Create</h3>
-      <div class="item" draggable="true">Baseline Report</div>
-      <div class="item" draggable="true">ESG Roadmap and Action Plan</div>
-      <div class="item" draggable="true">Net Zero Strategy</div>
-      <div class="item" draggable="true">Data Management</div>
-    </div>
-    <div class="section" id="implement">
-      <h3>Implement</h3>
-      <div class="item" draggable="true">Renewed Policies</div>
-      <div class="item" draggable="true">Action Plan Implementation</div>
-      <div class="item" draggable="true">Annual ESG Report</div>
-      <div class="item" draggable="true">ESG Supply Chain Engagement</div>
-    </div>
-  </div>
-
-  <h3>Drop your selected services below:</h3>
-  <div class="drop-zone" id="s<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -24,8 +7,8 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
     h2, h3 { color: #333; }
-    .container { display: flex; justify-content: space-between; flex-wrap: wrap; }
-    .section, .drop-zone { border: 2px dashed #bbb; background: #fff; border-radius: 10px; padding: 15px; width: 30%; min-height: 200px; margin-bottom: 20px; }
+    .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .section, .drop-zone { border: 2px dashed #bbb; background: #fff; border-radius: 10px; padding: 15px; flex: 1 1 30%; min-height: 200px; }
     .section h3, .drop-zone h3 { margin-top: 0; }
     .item { padding: 8px 10px; margin: 5px 0; background-color: #27ae60; color: white; border-radius: 5px; cursor: grab; }
     .drop-zone.highlight { border-color: #2ecc71; background-color: #e9fce9; }
@@ -50,7 +33,24 @@
       <div class="item" draggable="true">Materiality and Risk Assessment</div>
       <div class="item" draggable="true">Supply Chain Assessment</div>
     </div>
-    <div class="section" id="create"electedZone">
+    <div class="section" id="create">
+      <h3>Create</h3>
+      <div class="item" draggable="true">Baseline Report</div>
+      <div class="item" draggable="true">ESG Roadmap and Action Plan</div>
+      <div class="item" draggable="true">Net Zero Strategy</div>
+      <div class="item" draggable="true">Data Management</div>
+    </div>
+    <div class="section" id="implement">
+      <h3>Implement</h3>
+      <div class="item" draggable="true">Renewed Policies</div>
+      <div class="item" draggable="true">Action Plan Implementation</div>
+      <div class="item" draggable="true">Annual ESG Report</div>
+      <div class="item" draggable="true">ESG Supply Chain Engagement</div>
+    </div>
+  </div>
+
+  <h3>Drop your selected services below:</h3>
+  <div class="drop-zone" id="selectedZone">
     <h3>Selected Services</h3>
   </div>
 
@@ -65,34 +65,23 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd2xqemF3bnVqcHJoY2ZuZG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NjY2MDIsImV4cCI6MjA2MzI0MjYwMn0.n7p5uNmwudTjGmnV2kTxo1O9X4xu9Zn_XBczyuaR2kM'
     );
 
-    const items = document.querySelectorAll('.item');
     const dropZone = document.getElementById('selectedZone');
 
-    items.forEach(item => {
-      item.addEventListener('dragstart', dragStart);
+    document.querySelectorAll('.item').forEach(item => {
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', e.target.innerText);
+      });
     });
 
-    dropZone.addEventListener('dragover', dragOver);
-    dropZone.addEventListener('drop', dropItem);
-    dropZone.addEventListener('dragleave', dragLeave);
-
-    function dragStart(e) {
-      e.dataTransfer.setData('text/plain', e.target.innerText);
-    }
-
-    function dragOver(e) {
+    dropZone.addEventListener('dragover', e => {
       e.preventDefault();
       dropZone.classList.add('highlight');
-    }
+    });
 
-    function dragLeave() {
-      dropZone.classList.remove('highlight');
-    }
-
-    function dropItem(e) {
+    dropZone.addEventListener('drop', e => {
       e.preventDefault();
       const text = e.dataTransfer.getData('text/plain');
-      const exists = Array.from(dropZone.querySelectorAll('div')).some(div => div.innerText === text);
+      const exists = Array.from(dropZone.querySelectorAll('.item')).some(div => div.innerText === text);
       if (!exists) {
         const newItem = document.createElement('div');
         newItem.className = 'item';
@@ -100,19 +89,23 @@
         dropZone.appendChild(newItem);
       }
       dropZone.classList.remove('highlight');
-    }
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('highlight');
+    });
 
     async function submitSelection() {
       const orgName = document.getElementById('orgName').value.trim();
       const email = document.getElementById('email').value.trim();
-      const selectedItems = Array.from(dropZone.querySelectorAll('div.item')).map(item => item.innerText);
+      const selectedItems = Array.from(dropZone.querySelectorAll('.item')).map(item => item.innerText);
 
       if (!orgName || !email) {
         alert("Please fill in both organization name and email.");
         return;
       }
 
-      const { data, error } = await supabase.from('esg_responses').insert([{
+      const { error } = await supabase.from('esg_responses').insert([{
         organization: orgName,
         email: email,
         services: selectedItems,

@@ -73,25 +73,26 @@
         return;
       }
 
-      fetch('https://script.google.com/macros/s/AKfycbzq-nSXQ_spvW7h_pyuzUPZ7iabm-aSw3io9JW9y5QWmXQT3Ew-YiP9HZVgYZraH0uo4Q/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          organization: org,
-          email: email,
-          services: selected.join(', ')
-        })
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('result').innerHTML =
-          `<h3>Thank you, ${org}!</h3><p>You selected ${selected.length} service(s):</p><ul>` +
-          selected.map(s => `<li>${s}</li>`).join('') + `</ul>`;
-      })
-      .catch(error => {
-        alert(\"There was an error submitting your data.\");
-        console.error(error);
-      });
+fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSXFzoVsM_wCQ/exec', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    organization: org,
+    email: email,
+    services: selected.join(', ')
+  })
+})
+.then(response => response.text())
+.then(data => {
+  document.getElementById('result').innerHTML =
+    `<h3>Thank you, ${org}!</h3><p>You selected ${selected.length} service(s):</p><ul>` +
+    selected.map(s => `<li>${s}</li>`).join('') + `</ul><p><strong>${data}</strong></p>`;
+})
+.catch(error => {
+  document.getElementById('result').innerHTML =
+    `<p style="color:red;">Submission failed: ${error.message}</p>`;
+  console.error('Error:', error);
+});
     }
   </script>
 </body>

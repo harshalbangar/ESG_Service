@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ESG Integration Service Selector</title>
@@ -53,50 +53,49 @@
     </div>
   </div>
 
-  <button class="submit-btn" onclick="submitForm()">Submit</button>
+  <button type="button" class="submit-btn" onclick="submitForm()">Submit</button>
 
   <div id="result" class="section"></div>
 
-<script>
-function submitForm() {
-  console.log("Submit function triggered");
-  const org = document.getElementById('org').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  let selected = [];
+  <!-- Place the script at the end to ensure it loads after all HTML -->
+  <script>
+    function submitForm() {
+      console.log('Submit function triggered');
+      const org = document.getElementById('org').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      let selected = [];
 
-  checkboxes.forEach(cb => {
-    if (cb.checked) selected.push(cb.value);
-  });
+      checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(cb.value);
+      });
 
-  if (!org || !email) {
-    alert("Please enter both Organisation Name and Email.");
-    return;
-  }
+      if (!org || !email) {
+        alert("Please enter both Organisation Name and Email.");
+        return;
+      }
 
-  fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSXFzoVsM_wCQ/exec', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      organization: org,
-      email: email,
-      services: selected.join(', ')
-    })
-  })
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('result').innerHTML =
-      `<h3>Thank you, ${org}!</h3><p>You selected ${selected.length} service(s):</p><ul>` +
-      selected.map(s => `<li>${s}</li>`).join('') + `</ul><p><strong>${data}</strong></p>`;
-  })
-  .catch(error => {
-    document.getElementById('result').innerHTML =
-      `<p style="color:red;">Submission failed: ${error.message}</p>`;
-    console.error('Error:', error);
-  });
-}
-</script>
+      fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSXFzoVsM_wCQ/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organization: org,
+          email: email,
+          services: selected.join(', ')
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('result').innerHTML =
+          `<h3>Thank you, ${org}!</h3><p>You selected ${selected.length} service(s):</p><ul>` +
+          selected.map(s => `<li>${s}</li>`).join('') + `</ul><p><strong>${data}</strong></p>`;
+      })
+      .catch(error => {
+        document.getElementById('result').innerHTML =
+          `<p style="color:red;">Submission failed: ${error.message}</p>`;
+        console.error('Error:', error);
+      });
+    }
+  </script>
 </body>
 </html>

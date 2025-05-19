@@ -105,12 +105,12 @@
         return;
       }
 
-      const { error } = await supabase.from('esg_responses').insert([{
-        organization: orgName,
-        email: email,
-        services: selectedItems,
-        timestamp: new Date().toISOString()
-      }]);
+const { error } = await supabase
+  .from('esg_responses')
+  .insert([{ organization, email, services, timestamp: new Date().toISOString() }], {
+    returning: 'minimal'
+  });
+
 
       if (error) {
         console.error("Supabase Error:", error);

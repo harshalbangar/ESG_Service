@@ -75,7 +75,9 @@
 
 fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSXFzoVsM_wCQ/exec', {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+  },
   body: JSON.stringify({
     organization: org,
     email: email,
@@ -93,7 +95,6 @@ fetch('https://script.google.com/macros/s/AKfycbwDi3ct2FYTxRgCW7W4GLndggriWgdzSX
     `<p style="color:red;">Submission failed: ${error.message}</p>`;
   console.error('Error:', error);
 });
-
     }
   </script>
 </body>

@@ -107,9 +107,13 @@
 
 const { error } = await supabase
   .from('esg_responses')
-  .insert([{ organization, email, services, timestamp: new Date().toISOString() }], {
-    returning: 'minimal'
-  });
+  .insert([{
+    organization: orgName,
+    email: email,
+    services: selectedItems,
+    timestamp: new Date().toISOString()
+  }], { returning: 'minimal' });
+
 
 
       if (error) {
